@@ -4,8 +4,7 @@
 import sys
 import re
 
-pattern = re.compile(
-    "^(revert: )?(feat|fix|polish|docs|style|refactor|perf|test|workflow|ci|chore|types)(\(.+\))?: .{1,50}")
+pattern = re.compile("^(feat|fix|polish|docs|style|refactor|perf|test|workflow|ci|chore|types)(\(.+\))?: .{1,50}")
 
 
 def validate_commit_msg(msg: str):
@@ -14,7 +13,12 @@ def validate_commit_msg(msg: str):
     :param msg:
     :return: void
     """
-    if re.match(pattern, msg):
+
+    if msg.startswith("Revert"):
+        sys.exit(0)
+    elif msg.startswith("Merge"):
+        sys.exit(0)
+    elif re.match(pattern, msg):
         sys.exit(0)
     else:
         print("invalid commit format")
